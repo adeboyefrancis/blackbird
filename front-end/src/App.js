@@ -242,7 +242,7 @@ export default function App() {
         <div className="topbar">
           <div className="logo">
             <img
-              src="https://www.propelleraero.com/wp-content/uploads/2021/05/Vector.svg"
+              src="https://www.propelleraero.com/dirtmate/favicon-96x96.png"
               alt="Propeller"
               style={{ height: '22px', width: 'auto', filter: 'brightness(0) invert(1)' }}
             />
