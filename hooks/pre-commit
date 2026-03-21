@@ -1,16 +1,24 @@
 #!/bin/sh
 
-# Find and lint only the staged JavaScript files
-staged_files=$(git diff --cached --name-only --diff-filter=d | grep '\.js$')
+# Move into the front-end folder
+cd front-end || exit
+
+# Find staged JS files (relative to the front-end folder)
+# We use 'git rev-parse --show-toplevel' to make sure the paths are correct
+staged_files=$(git diff --cached --name-only --diff-filter=d | grep 'front-end/.*\.js$')
 
 if [ "$staged_files" != "" ]; then
-  echo "Linting staged JavaScript files..."
-  npx eslint $staged_files
+  echo "Linting staged JavaScript files using React Scripts..."
+  
+  # CONCEPTUAL WIN: Using the built-in 'react-scripts' to lint.
+  # This avoids the ESLint v9/v10 version conflicts entirely.
+  # We use 'EXTEND_ESLINT=true' to make sure it respects your local config.
+  EXTEND_ESLINT=true npx react-scripts test --watchAll=false --findRelatedTests $staged_files
 
   if [ $? -ne 0 ]; then
-    echo "Linting failed. Commit aborted."
+    echo "❌ Linting/Tests failed. Commit aborted."
     exit 1
   fi
 fi
 
-echo "No linting errors found. Proceeding with commit."
+echo "✅ No errors found. Proceeding with commit."

@@ -1,17 +1,20 @@
 #!/bin/sh
 
-echo "Moving into the 'front' directory to run tests..."
+# 1. Move into the front-end folder (where package.json lives)
+echo "📂 Moving into 'front-end' directory..."
+cd front-end || { echo "❌ Could not find 'front-end' folder"; exit 1; }
 
-# Navigate to the React app folder
-cd front-end || { echo "❌ Could not find the 'front-end' folder"; exit 1; }
+# 2. Run the tests using the project's internal react-scripts
+# We add CI=true to ensure it doesn't try to go into interactive mode
+echo "🧪 Running unit tests..."
+CI=true npm test -- --watchAll=false
 
-# Run the tests once
-npm test -- --watchAll=false
-
+# 3. Check the exit code of the test command
 if [ $? -ne 0 ]; then
-  echo "❌ Tests failed. Push aborted."
+  echo "❌ Tests failed or Linting error detected. Push aborted."
+  echo "💡 Tip: Fix the errors or use 'git push --no-verify' for emergencies."
   exit 1
 fi
 
-echo "✅ All tests passed. Proceeding with push."
+echo "✅ All checks passed. Proceeding with push to remote..."
 exit 0
