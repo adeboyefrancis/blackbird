@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Find and lint only the staged JavaScript files
+staged_files=$(git diff --cached --name-only --diff-filter=d | grep '\.js$')
+
+if [ "$staged_files" != "" ]; then
+  echo "Linting staged JavaScript files..."
+  npx eslint $staged_files
+
+  if [ $? -ne 0 ]; then
+    echo "Linting failed. Commit aborted."
+    exit 1
+  fi
+fi
+
+echo "No linting errors found. Proceeding with commit."

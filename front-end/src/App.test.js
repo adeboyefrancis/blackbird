@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders the worksite sidebar label', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  // This matches the "Worksite" label in your NAV data
+  const labelElement = screen.getByText(/Worksite/i);
+  expect(labelElement).toBeInTheDocument();
 });
